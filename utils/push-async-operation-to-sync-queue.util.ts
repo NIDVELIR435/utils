@@ -47,7 +47,6 @@ async function processMessage(data: { id: number }) {
             console.log(`Finished processing id: ${data.id} ${new Date().getTime()}`);
             release();
         });
-
 }
 
 const data = [
