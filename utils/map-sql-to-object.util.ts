@@ -142,6 +142,12 @@ const data = [
         price_selection_id: 6181
     },
     {
+        id: 72,
+        date: "2023-04-26 00:00:00",
+        category: "DG",
+        event_id: 778,
+    },
+    {
         id: 74,
         date: "2023-04-26 00:00:00",
         category: "DG",
@@ -221,7 +227,7 @@ type NonEmptyArray<T> = ["id", ...T[]]
 type Relation = {
     // for type "main" can be null, but for other type should describe sql
     // alias prefix egc.:
-    // if in sql column alias for join is event_<column_name> than name should be "event"
+    // if in sql column alias is event_<column_name> than name should be "event"
     name: string | null,
     type: RelationType,
     // list of columns by rule:
@@ -232,8 +238,7 @@ type Relation = {
 }
 
 function mapData(data: any,  desiredStructure: Relation) {
-    if (isEmpty(desiredStructure)) return [];
-    if (isEmpty(data)) return [];
+    if (isEmpty(desiredStructure) || isEmpty(data)) return [];
 
     const result = [];
 
@@ -254,7 +259,7 @@ function mapData(data: any,  desiredStructure: Relation) {
 
         if (currentIdExist)
             relationDescription.columnsAliases.forEach((column) => {
-                entity[column] = isNil(relationDescription.name) ? row[column] : row[`${relationDescription.name}_${column}`];
+                entity[column] = (isNil(relationDescription.name) ? row[column] : row[`${relationDescription.name}_${column}`]) ?? null;
             });
 
         if (currentIdExist)
